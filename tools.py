@@ -2,6 +2,9 @@ import os, sys
 import glob
 
 BIG_FILES = ["./libtorch/lib/libtorch.so"]
+_BASEDIR = os.path.dirname(os.path.abspath(__file__))
+
+BIG_FILES = [os.path.join(_BASEDIR, _) for _ in BIG_FILES]
 
 FILE_SIZE = 32 * 1024 * 1024
 PART_SEP = ".part."
@@ -50,10 +53,9 @@ def join(file_path):
 
 
 if __name__ == '__main__':
-    _BASEDIR = os.path.dirname(os.path.abspath(__file__))
     for big_file in BIG_FILES:
-        split(os.path.join(_BASEDIR, big_file))
+        split(big_file)
 
         if len(sys.argv) > 1:
-            join(os.path.join(_BASEDIR, big_file))
+            join(big_file)
 

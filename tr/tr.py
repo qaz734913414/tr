@@ -147,7 +147,7 @@ def detect(img, flag=FLAG_RECT):
     return rect_arr
 
 
-def run(img, px=5):
+def run(img, px=3):
     if isinstance(img, str):
         img_pil = Image.open(img).convert("L")
     elif isinstance(img, Image.Image):

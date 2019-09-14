@@ -24,15 +24,16 @@ if __name__ == "__main__":
     rect_arr = detect(gray_pil, FLAG_RECT)
 
     img_draw = ImageDraw.Draw(color_pil)
-    colors = ['red', 'green', 'blue', "yellow", "pink"]
+    colors = ['red', 'green', 'blue', "purple"]
 
     for i, rect in enumerate(rect_arr):
         x, y, w, h = rect
         img_draw.rectangle(
             (x, y, x + w, y + h),
             outline=colors[i % len(colors)],
-            width=4)
+            width=2)
 
+    color_pil.save("~color_pil.png")
     color_pil.show()
 
     blank_pil = Image.new("L", img_pil.size, 255)
@@ -45,5 +46,7 @@ if __name__ == "__main__":
         font = ImageFont.truetype("msyh.ttf", max(int(h * 0.6), 14))
         blank_draw.text(xy=(x, y), text=txt, font=font)
 
+    blank_pil.save("~blank_pil.png")
     blank_pil.show()
+
 

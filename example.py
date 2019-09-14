@@ -8,3 +8,4 @@ print(tr.recognize("imgs/line.png"))
 
 # detect and recognize, return list of ((x, y, w, h), text, confidence)
 print(tr.run("imgs/name_card.jpg"))
+

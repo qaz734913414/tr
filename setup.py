@@ -6,12 +6,11 @@ import os
 
 import tools
 
-_BASEDIR = os.path.dirname(os.path.abspath(__file__))
 for big_file in tools.BIG_FILES:
-    tools.join(os.path.join(_BASEDIR, big_file))
+    tools.join(big_file)
 
 appname = "tr"
-version = "1.0.0.5"
+version = "1.1.0.1"
 
 with open("README.md", "r") as f:
     readme = f.read()
