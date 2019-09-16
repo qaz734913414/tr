@@ -4,8 +4,8 @@ from PIL import Image, ImageDraw, ImageFont
 import cv2
 
 if __name__ == "__main__":
-    img_path = "imgs/name_card.jpg"
-    # img_path = "imgs/web.png"
+    # img_path = "imgs/name_card.jpg"
+    img_path = "imgs/id_card.jpeg"
 
     img_pil = Image.open(img_path)
     MAX_SIZE = 2000
