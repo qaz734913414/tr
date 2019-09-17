@@ -7,11 +7,17 @@ Tested under Python3 with *Ubuntu 16.04* and *Ubuntu 18.04*
 <pre>pip install numpy Pillow
 </pre>
 #### Install
++ 安装方法一
 <pre>git clone https://github.com/myhub/tr.git
 cd ./tr
 sudo python setup.py install
-
-or pip install git+https://github.com/myhub/tr.git@master
+</pre>
++ 安装方法二
+<pre>pip install git+https://github.com/myhub/tr.git@master
+</pre>
++ 测试是否安装成功
+<pre>python test.py
+python test_angle.py
 </pre>
 
 #### How To Use?
