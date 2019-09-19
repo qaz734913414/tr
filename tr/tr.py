@@ -3,10 +3,12 @@ import numpy
 from PIL import Image
 import os, time
 import ctypes
+import cv2
 try:
     from .char_table import char_table
 except:
     from char_table import char_table
+
 
 FLAG_RECT = (1 << 0)
 FLAG_ROTATED_RECT = (1 << 1)
@@ -36,6 +38,8 @@ os.chdir(_BASEDIR)
 _libc.tr_init()
 os.chdir(_cwd)
 
+line_count = 0
+
 
 def _read(arr, flag):
     if arr.dtype == numpy.int32:
@@ -53,24 +57,36 @@ def _read(arr, flag):
 
 
 def recognize(img):
-    if isinstance(img, str):
-        img_pil = Image.open(img).convert("L")
-    elif isinstance(img, Image.Image):
-        if img.mode != "L":
-            img_pil = img.convert("L")
+    if isinstance(img, numpy.ndarray):
+        height, width = img.shape
+        if height != 32:
+            new_width = int(width * 32 / height + 0.5)
+            img_arr = cv2.resize(img, (new_width, 32), cv2.INTER_CUBIC)
         else:
-            img_pil = img
+            img_arr = img
     else:
-        raise NotImplementedError()
+        if isinstance(img, str):
+            img_pil = Image.open(img).convert("L")
+        elif isinstance(img, Image.Image):
+            if img.mode != "L":
+                img_pil = img.convert("L")
+            else:
+                img_pil = img
+        else:
+            raise NotImplementedError()
 
-    new_width = int(img_pil.width * 32 / img_pil.height + 0.5)
-    img_pil = img_pil.resize((new_width, 32), Image.BICUBIC)
+        if img_pil.height != 32:
+            new_width = int(img_pil.width * 32 / img_pil.height + 0.5)
+            img_pil = img_pil.resize((new_width, 32), Image.BICUBIC)
 
-    # img_pil.save("part_imgs/" + str(time.time()) + ".png")
+        img_arr = numpy.asarray(img_pil, dtype="float32") / 255.
 
-    img_arr = numpy.asarray(img_pil, dtype="float32") / 255.
+    # global line_count
+    # line_count += 1
+    # cv2.imwrite("tmp/" + str(line_count) + ".png", img_arr * 255.0)
 
-    size = numpy.array([img_pil.width, img_pil.height], dtype="int32")
+    height, width = img_arr.shape
+    size = numpy.array([width, height], dtype="int32")
 
     num = _libc.tr_recognize(
         numpy.ctypeslib.as_ctypes(img_arr),
@@ -147,7 +163,49 @@ def detect(img, flag=FLAG_RECT):
     return rect_arr
 
 
-def run(img, px=3):
+def run_angle(img, px=0, py=2):
+    if isinstance(img, str):
+        img_pil = Image.open(img).convert("L")
+    elif isinstance(img, Image.Image):
+        if img.mode != "L":
+            img_pil = img.convert("L")
+        else:
+            img_pil = img
+    else:
+        raise NotImplementedError()
+
+    img_arr = numpy.asarray(img_pil, dtype="float32") / 255.0
+    rect_arr = detect(img_pil, FLAG_ROTATED_RECT)
+
+    results = []
+    for rect in rect_arr:
+        cx, cy, w, h, a = rect
+        if a < -45:
+            w, h = h, w
+            a += 90
+        w += px * 2
+        h += py * 2
+        box1 = cv2.boxPoints(((cx, cy), (w, h), a))
+
+        w = int(w + 0.5)
+        h = int(h + 0.5)
+        box2 = numpy.array([[0, h - 1],
+                            [0, 0],
+                            [w - 1, 0],
+                            [w - 1, h - 1]], dtype="float32")
+
+        matrix = cv2.getPerspectiveTransform(box1, box2)
+        img_line = cv2.warpPerspective(img_arr, matrix, (w, h), flags=cv2.INTER_CUBIC, borderValue=1.0)
+
+        txt, prob = recognize(img_line)
+
+        if txt != "":
+            results.append(((cx, cy, w, h, a), txt, prob))
+
+    return results
+
+
+def run(img, px=3, py=0):
     if isinstance(img, str):
         img_pil = Image.open(img).convert("L")
     elif isinstance(img, Image.Image):
