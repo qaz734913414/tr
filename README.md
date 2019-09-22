@@ -39,8 +39,11 @@ print(tr.run("imgs/name_card.jpg"))
 print(tr.run_angle("imgs/id_card.jpeg"))
 </pre>
 
-#### Test
-https://github.com/myhub/tr/blob/master/test.ipynb
+#### 效果展示
+<table>
+<tr><th>detect</th><th>recognize</th></tr>
+<tr><td><img src="imgs/output/1.png" width="36%"></td><img src="imgs/output/1.png" width="36%"><td>recognize</td></tr>
+</table>
 
 #### TODO
 - [x] 检测带角度的文本框
