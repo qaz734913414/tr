@@ -44,8 +44,8 @@ print(tr.run_angle("imgs/id_card.jpeg"))
 <tr><th>detect</th><th>recognize</th></tr>
 
 <tr>
-<td><img src="imgs/output/id_card/1.png" width="36%"></td>
-<td><img src="imgs/output/id_card/output/2.png" width="36%"></td>
+<td><img src="imgs/output/id_card/1.png"></td>
+<td><img src="imgs/output/id_card/2.png"></td>
 </tr>
 
 </table>
