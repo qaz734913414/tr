@@ -10,7 +10,7 @@ for big_file in tools.BIG_FILES:
     tools.join(big_file)
 
 appname = "tr"
-version = "1.1.2.0"
+version = "1.1.2.1"
 
 with open("README.md", "r") as f:
     readme = f.read()
