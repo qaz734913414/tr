@@ -4,6 +4,7 @@ from PIL import Image
 import os, time
 import ctypes
 import cv2
+from functools import cmp_to_key
 try:
     from .char_table import char_table
 except:
@@ -163,6 +164,28 @@ def detect(img, flag=FLAG_RECT):
     return rect_arr
 
 
+def _sort_blocks(blocks):
+    def block_cmp(b1, b2):
+        list1 = [b1[0][0], b1[0][1], b1[0][2], b1[0][3]]
+        list2 = [b2[0][0], b2[0][1], b2[0][2], b2[0][3]]
+        if len(b1[0]) == 4:
+            list1[0] += list1[2] / 2
+            list1[1] += list1[3] / 2
+            list2[0] += list2[2] / 2
+            list2[1] += list2[3] / 2
+
+        flag = 1
+        if list1[0] > list2[0]:
+            list1, list2 = list2, list1
+            flag = -1
+
+        if list2[1] + list1[3] / 2 < list1[1]:
+            return flag
+        return -flag
+
+    blocks.sort(key=cmp_to_key(block_cmp), reverse=False)
+
+
 def run_angle(img, px=0, py=2):
     if isinstance(img, str):
         img_pil = Image.open(img).convert("L")
@@ -202,6 +225,7 @@ def run_angle(img, px=0, py=2):
         if txt != "":
             results.append(((cx, cy, w, h, a), txt, prob))
 
+    _sort_blocks(results)
     return results
 
 
@@ -231,6 +255,7 @@ def run(img, px=3, py=0):
         if txt != "":
             results.append(((x, y, w, h), txt, prob))
 
+    _sort_blocks(results)
     return results
 
 
