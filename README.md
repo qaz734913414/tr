@@ -51,4 +51,6 @@ print(tr.run_angle("imgs/id_card.jpeg"))
 #### 效果展示
 <img src="imgs/output/id_card/1.png" />
 <img src="imgs/output/id_card/2.png" />
-
+<hr>
+<img src="imgs/output/name_card/1.png" />
+<img src="imgs/output/name_card/2.png" />

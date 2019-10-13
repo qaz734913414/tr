@@ -1,6 +1,6 @@
 # coding: utf-8
 from tr import *
-from PIL import Image, ImageDraw, ImageFont, ImageOps
+from PIL import Image, ImageDraw, ImageFont
 import cv2
 
 if __name__ == "__main__":
@@ -15,7 +15,7 @@ if __name__ == "__main__":
         new_height = int(img_pil.height / scale + 0.5)
         img_pil = img_pil.resize((new_width, new_height), Image.BICUBIC)
 
-    print(img_pil.width, img_pil.height)
+    print(img_path, img_pil.width, img_pil.height)
 
     color_pil = img_pil.convert("RGB")
     gray_pil = img_pil.convert("L")
@@ -46,11 +46,11 @@ if __name__ == "__main__":
             w, h = h, w
             a += 90
 
-        txt_pil = Image.new('RGBA', (w, h), (255, 255, 255, 0))
+        txt_pil = Image.new('RGBA', (int(w * 1.4), h), (255, 255, 255, 0))
         txt_draw = ImageDraw.Draw(txt_pil)
 
         txt = line[1]
-        font = ImageFont.truetype("msyh.ttf", max(int(h * 0.5), 14))
+        font = ImageFont.truetype("msyh.ttf", max(int(h * 0.4), 12))
 
         txt_draw.text(xy=(0, 0), text=txt, font=font, fill=(0, 0, 0, 255))
         txt_pil = txt_pil.rotate(-a, expand=1, resample=Image.BICUBIC)
