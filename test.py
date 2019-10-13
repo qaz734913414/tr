@@ -7,7 +7,25 @@ if __name__ == "__main__":
     img_path = "imgs/name_card.jpg"
 
     img_pil = Image.open(img_path)
-    MAX_SIZE = 1500
+
+    try:
+        if hasattr(img_pil, '_getexif'):
+            # from PIL import ExifTags
+            # for orientation in ExifTags.TAGS.keys():
+            #     if ExifTags.TAGS[orientation] == 'Orientation':
+            #         break
+            orientation = 274
+            exif = dict(img_pil._getexif().items())
+            if exif[orientation] == 3:
+                img_pil = img_pil.rotate(180, expand=True)
+            elif exif[orientation] == 6:
+                img_pil = img_pil.rotate(270, expand=True)
+            elif exif[orientation] == 8:
+                img_pil = img_pil.rotate(90, expand=True)
+    except:
+        pass
+
+    MAX_SIZE = 1600
     if img_pil.height > MAX_SIZE or img_pil.width > MAX_SIZE:
         scale = max(img_pil.height / MAX_SIZE, img_pil.width / MAX_SIZE)
 
