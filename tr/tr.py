@@ -5,6 +5,11 @@ import os, time
 import ctypes
 import cv2
 from functools import cmp_to_key
+try:
+    from .char_table import char_table
+except:
+    from char_table import char_table
+
 
 FLAG_RECT = (1 << 0)
 FLAG_ROTATED_RECT = (1 << 1)
@@ -12,9 +17,6 @@ FLAG_CRNN_PROB = (1 << 16)
 FLAG_CRNN_INDEX = (1 << 17)
 
 _BASEDIR = os.path.dirname(os.path.abspath(__file__))
-with open(os.path.join(_BASEDIR, "char_table.txt"), "r", encoding="utf-8") as f:
-    char_table = " " + f.read()
-
 
 _libc = ctypes.cdll.LoadLibrary(os.path.join(_BASEDIR, 'libtr.so'))
 assert _libc is not None
@@ -80,20 +82,9 @@ def recognize(img):
 
         img_arr = numpy.asarray(img_pil, dtype="float32") / 255.
 
-<<<<<<< HEAD
-    # img_arr = (img_arr - img_arr.min()) / (img_arr.max() - img_arr.min())
-
-    # global line_count
-    # line_count += 1
-    # cv2.imwrite("tmp/" + str(line_count) + ".png", img_arr * 255.0)
-=======
     global line_count
     line_count += 1
     cv2.imwrite("tmp/" + str(line_count) + ".png", img_arr * 255.0)
->>>>>>> 64e8f6f86c82c1a04de9a8ce73253825725dbf34
-
-    # img_arr = (img_arr - 0.5) * 2
-    # print("img_arr", img_arr.min(), img_arr.max())
 
     height, width = img_arr.shape
     size = numpy.array([width, height], dtype="int32")
@@ -208,9 +199,6 @@ def run_angle(img, px=0, py=2):
 
     img_arr = numpy.asarray(img_pil, dtype="float32") / 255.0
     rect_arr = detect(img_pil, FLAG_ROTATED_RECT)
-    if rect_arr is None:
-        return []
-
     if rect_arr is None:
         return []
 
