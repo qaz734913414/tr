@@ -5,10 +5,9 @@ from PIL import Image, ImageDraw, ImageFont
 
 if __name__ == "__main__":
     img_path = "imgs/name_card.jpg"
-    # img_path = "imgs/web.png"
 
     img_pil = Image.open(img_path)
-    MAX_SIZE = 2000
+    MAX_SIZE = 1500
     if img_pil.height > MAX_SIZE or img_pil.width > MAX_SIZE:
         scale = max(img_pil.height / MAX_SIZE, img_pil.width / MAX_SIZE)
 
@@ -16,7 +15,7 @@ if __name__ == "__main__":
         new_height = int(img_pil.height / scale + 0.5)
         img_pil = img_pil.resize((new_width, new_height), Image.BICUBIC)
 
-    print(img_pil.width, img_pil.height)
+    print(img_path, img_pil.width, img_pil.height)
 
     color_pil = img_pil.convert("RGB")
     gray_pil = img_pil.convert("L")
@@ -33,8 +32,8 @@ if __name__ == "__main__":
             outline=colors[i % len(colors)],
             width=2)
 
-    color_pil.save("~color_pil.png")
     color_pil.show()
+    color_pil.save("~color_pil.png")
 
     blank_pil = Image.new("L", img_pil.size, 255)
     blank_draw = ImageDraw.Draw(blank_pil)
@@ -46,7 +45,6 @@ if __name__ == "__main__":
         font = ImageFont.truetype("msyh.ttf", max(int(h * 0.6), 14))
         blank_draw.text(xy=(x, y), text=txt, font=font)
 
-    blank_pil.save("~blank_pil.png")
     blank_pil.show()
-
+    blank_pil.save("~blank_pil.png")
 

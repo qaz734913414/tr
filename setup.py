@@ -10,9 +10,9 @@ for big_file in tools.BIG_FILES:
     tools.join(big_file)
 
 appname = "tr"
-version = "1.1.0.1"
+version = "1.3.0"
 
-with open("README.md", "r") as f:
+with open("README.md", "r", encoding="utf-8") as f:
     readme = f.read()
 
 packages = ["tr", "libtorch"]
