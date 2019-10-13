@@ -80,11 +80,17 @@ def recognize(img):
 
         img_arr = numpy.asarray(img_pil, dtype="float32") / 255.
 
+<<<<<<< HEAD
     # img_arr = (img_arr - img_arr.min()) / (img_arr.max() - img_arr.min())
 
     # global line_count
     # line_count += 1
     # cv2.imwrite("tmp/" + str(line_count) + ".png", img_arr * 255.0)
+=======
+    global line_count
+    line_count += 1
+    cv2.imwrite("tmp/" + str(line_count) + ".png", img_arr * 255.0)
+>>>>>>> 64e8f6f86c82c1a04de9a8ce73253825725dbf34
 
     # img_arr = (img_arr - 0.5) * 2
     # print("img_arr", img_arr.min(), img_arr.max())
@@ -202,6 +208,8 @@ def run_angle(img, px=0, py=2):
 
     img_arr = numpy.asarray(img_pil, dtype="float32") / 255.0
     rect_arr = detect(img_pil, FLAG_ROTATED_RECT)
+    if rect_arr is None:
+        return []
 
     if rect_arr is None:
         return []
