@@ -1,4 +1,4 @@
-# tr - Offline OCR
+# tr - Text Recognition 
 Tested under Python3 with *Ubuntu 16.04* and *Ubuntu 18.04*
 
 一款针对扫描文档的离线文本识别SDK，核心代码全部采用C++开发，并提供Python接口
@@ -42,8 +42,8 @@ print(tr.run_angle("imgs/id_card.jpeg"))
 #### TODO
 - [x] 检测带角度的文本框
 - [x] 识别部分支持带角度的文本框
-- [ ] 优化识别部分代码，当前文本识别准确率不够高
 - [ ] 支持Windows/Mac OS等操作系统
+- [ ] 优化识别部分代码
 - [ ] 支持表格检测
 - [ ] 识别英文空格
 - [ ] 支持GPU/手机端
